@@ -1,0 +1,18 @@
+{
+  "properties": [
+    {
+      "name": "spring.application.privatekey",
+      "type": "java.lang.String",
+      "description": "Description for spring.application.privatekey."
+    },
+    {
+      "name": "spring.application.appid",
+      "type": "java.lang.String",
+      "description": "Description for spring.application.appid."
+    },
+    {
+      "name": "spring.application.publickey",
+      "type": "java.lang.String",
+      "description": "Description for spring.application.publickey."
+    }
+  ] }

@@ -98,16 +98,6 @@ public class LoginController {
         if(result == 1){//发送成功
             phonecodemap1.put(mobilephone, code);//放入map集合进行对比
 
-/*
-            final Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    phonecodemap1.remove(phoneNum);
-                    timer.cancel();
-                }
-            }, 5 * 60 * 1000);
-*/
             //执行定时任务
             ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1,
                     new BasicThreadFactory.Builder().namingPattern("example-schedule-pool-%d").daemon(true).build());

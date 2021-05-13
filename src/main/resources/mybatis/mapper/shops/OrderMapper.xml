@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mapper.OrderMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.entity.OrderEntity" id="orderMap">
+        <result property="proid" column="proid"/>
+        <result property="commid" column="commid"/>
+        <result property="buyerid" column="buyerid"/>
+        <result property="sellerid" column="sellerid"/>
+        <result property="senturl" column="senturl"/>
+        <result property="receiveurl" column="receiveurl"/>
+        <result property="procreatetime" column="procreatetime"/>
+        <result property="buyername" column="buyername"/>
+        <result property="sellername" column="sellername"/>
+        <result property="price" column="price"/>
+        <result property="freight" column="freight"/>
+        <result property="tradestatus" column="tradestatus"/>
+        <result property="payway" column="payway"/>
+        <result property="commname" column="commname"/>
+        <result property="category" column="category"/>
+        <result property="buyerphone" column="buyerphone"/>
+        <result property="sellerphone" column="sellerphone"/>
+        <result property="commdesc" column="commdesc"/>
+    </resultMap>
+    <!--分页查看所有订单-->
+    <select id="queryAll" resultType="com.entity.OrderEntity">
+        select * from orders 
+          <where>
+              <if test="tradestatus != null"> and tradestatus = #{tradestatus}</if>
+              <if test="buyerid != null"> and buyerid = #{buyerid}</if>
+              <if test="sellerid != null"> sellerid = #{sellerid}</if>
+              <if test="category != null"> category = #{category}</if>
+              <if test="proid != null"> proid  = #{proid}</if>
+              
+          </where>
+          order by procreatetime desc limit #{page},#{count}
+    </select>
+
+    <!--插入订单-->
+    <insert id="addNewOrder" parameterType="com.entity.OrderEntity">
+        insert into orders (proid,commid,buyerid,sellerid,senturl,receiveurl,buyername,sellername,price,freight,tradestatus,payway,commname,category,buyerphone,sellerphone,commdesc) values (#{proid},#{commid},#{buyerid},#{sellerid},#{senturl},#{receiveurl},#{buyername},#{sellername},#{price},#{freight},#{tradestatus},#{payway},#{commname},#{category},#{buyerphone},#{sellerphone},#{commdesc})
+    </insert>
+
+    <!--根据订单id查询订单-->
+    <select id="findOrderByProid" resultType="com.entity.OrderEntity">
+        select * from orders where proid = #{proid}
+    </select>
+    <!--根据买家id查询订单-->
+    <select id="findOrderByBuyerId" resultType="com.entity.OrderEntity">
+        select * from orders where buyerid = #{buyerid} desc limit #{page},#{count}
+    </select>
+
+    <!--根据卖家id查询订单-->
+    <select id="findOrderBySellerId" resultType="com.entity.OrderEntity">
+        select * from orders where sellerid = #{sellerid} desc limit #{page},#{count}
+    </select>
+
+    <!--修改订单信息-->
+    <update id="updateOrders" parameterType="com.entity.OrderEntity">
+        update orders set tradestatus = #{tradestatus}
+        <where>
+            <if test="buyerid != null"> and buyerid = #{buyerid}</if>
+            <if test="senturl != null"> and senturl = #{senturl}</if>
+            <if test="receiveurl != null"> and receiveurl = #{receiveurl}</if>
+            <if test="price != null"> and price = #{price}</if>
+            <if test="freight != null">and freight  = #{freight}</if>
+            <if test="paywoy != null"> payway = #{payway}</if>
+            <if test="buyerphone != null"> buyerphone = #{buyerphone}</if>
+            <if test="sellerphone != null"> sellerphone = #{sellerphone}</if>
+        </where>
+    </update>
+
+
+    <!--删除订单-->
+    <delete id="deleteOrder" parameterType="com.entity.OrderEntity">
+        delete from orders where proid = #{proid}
+    </delete>
+
+    <!--查询订单总数-->
+    <select id="countAllOrders" resultType="integer">
+        select count(*) from orders 
+        <where>
+            <if test="sellerid != null"> and sellerid = #{sellerid}</if>
+            <if test="tradestatus != null"> and tradestatus= #{tradestatus}</if>
+            <if test="buyerid != null"> buyerid = #{buyerid}</if>
+             <if test="category != null"> category = #{category}</if>
+            
+        </where>
+    </select>
+
+
+
+</mapper>

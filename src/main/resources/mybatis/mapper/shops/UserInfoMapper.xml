@@ -6,7 +6,7 @@
     <select id="LookUserinfoById" resultType="com.entity.UserInfo" >
         select u.userid, u.username,u.uimage,u.sex,u.mobilephone,u.email,u.school,u.faculty,u.userstatus,l.roleid
         from user_info u,login l
-        where u.userid=l.userid and userid=#{userid}
+        where u.userid=l.userid and u.userid=#{userid}
     </select>
     <!--    根据用户名查询用户信息-->
     <select id="LookUserinfoByName" resultType="com.entity.UserInfo" >

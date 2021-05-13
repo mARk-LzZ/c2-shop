@@ -10,6 +10,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
+
+/**
+ * @author lzz
+ */
 @Configuration
 public class ShiroConfig {
     /**
@@ -51,11 +56,13 @@ public class ShiroConfig {
 //    public ShiroDialect getShiroDialect() {
 //        return new ShiroDialect();
 //    }
+
     /**
      *  开启Shiro的注解(如@RequiresRoles,@RequiresPermissions),需借助SpringAOP扫描使用Shiro注解的类,并在必要时进行安全逻辑验证
      * 配置以下两个bean(DefaultAdvisorAutoProxyCreator和AuthorizationAttributeSourceAdvisor)即可实现此功能
      * @return
      */
+
     @Bean
     public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator(){
         DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();

@@ -25,6 +25,12 @@ spring:
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
+#  ∞¢¿Ô∞Õ∞Õ÷ß∏∂≈‰÷√
+  application:
+    privatekey:
+    publickey:
+    appid:
+
 
 
 
@@ -53,6 +59,8 @@ logging:
 
 server:
   port: 9100
+
+
 
   tomcat:
     max-http-post-size: 1000000

@@ -1,5 +1,6 @@
 package com.filter;
 
+
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -19,11 +20,13 @@ public class filter implements Filter {
         System.out.println("初始化过滤器");
     }
 
+
+    @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) res;
         String []  allowDomain= {"http://localhost:8080","http://localhost:9100"};
         Set<String> allowedOrigins= new HashSet<String>(Arrays.asList(allowDomain));
-        String originHeader=((HttpServletRequest) req).getHeader("Origin");
+        String originHeader=((HttpServletRequest)req).getHeader("Origin");
         if (allowedOrigins.contains(originHeader)){
             response.setHeader("Access-Control-Allow-Origin", originHeader);
             response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");

@@ -43,6 +43,8 @@ public class AdminController {
     private CommodityService commodityService;
     @Autowired
     private NoticesService noticesService;
+    @Autowired
+    private OrderService orderService;
 
     /**
      * 管理员跳转登录
@@ -300,6 +302,8 @@ public class AdminController {
                  dataNumber = commodityService.queryCommodityCount(null, commstatus);
                 return new PageVo(0,"已完成商品信息已显示",dataNumber,commodityList);
             }
+            default: dataNumber = -1;
+
         }
 
         return new PageVo(0,"已完成商品信息已显示",dataNumber,null);
@@ -333,5 +337,66 @@ public class AdminController {
         }
         return new ResultVo(false,StatusCode.ERROR,"操作失败");
     }
+
+    /*
+    * 分页按条件查看所有订单 100查看全部 1根据交易状态 2买家id 3卖家id 4商品分类 5订单号
+    * */
+    @PostMapping("/admin/listallorders")
+    public PageVo<List<OrderEntity>> userOrders(HttpServletRequest httpServletRequest) throws IOException {
+        JSONObject jsonObject =JsonReader.receivePost(httpServletRequest);
+        Integer page=jsonObject.getInteger("page");
+        Integer limit=jsonObject.getInteger("limit");
+        Integer tradestatus = jsonObject.getInteger("tradestatus");
+        String buyerid = jsonObject.getString("buyerid");
+        String sellerid = jsonObject.getString("sellerid");
+        String category = jsonObject.getString("category");
+        String proid = jsonObject.getString("proid");
+
+            if (tradestatus != null){
+              List<OrderEntity>  orderEntities1 = orderService.queryAll((page - 1) * limit, limit, tradestatus,null,null,null,null);
+               Integer dataNumber1 = orderService.countAllOrders(null,tradestatus,null,null);
+                return  new PageVo<> (0 , "" ,dataNumber1, orderEntities1);
+            }
+            else if (buyerid != null){
+              List<OrderEntity>  orderEntities2 = orderService.queryAll((page - 1) * limit, limit, null,buyerid,null,null,null);
+              Integer  dataNumber2 = orderService.countAllOrders(null,null,buyerid,null);
+                return  new PageVo<> (0 , "" ,dataNumber2, orderEntities2);
+            }
+            else if (sellerid != null){
+              List<OrderEntity>  orderEntities3 = orderService.queryAll((page - 1) * limit , limit, null,null,sellerid,null,null);
+              Integer  dataNumber3 = orderService.countAllOrders(sellerid,null,null,null);
+                return  new PageVo<> (0 , "" ,dataNumber3, orderEntities3);
+            }
+            else if (category != null){
+              List<OrderEntity>  orderEntities4 = orderService.queryAll((page - 1) * limit, limit, null,null,null,category,null);
+              Integer  dataNumber4 = orderService.countAllOrders(null,null,null,category);
+                return  new PageVo<> (0 , "" ,dataNumber4, orderEntities4);
+            }
+        else if (proid !=null){
+             List<OrderEntity>   orderEntities5 = orderService.queryAll((page - 1) * limit, limit, null,null,null,null,proid);
+               Integer dataNumber5 = 1;
+                return  new PageVo<> (0 , "" ,dataNumber5, orderEntities5);
+            }
+        else {
+                List<OrderEntity> orderEntities = orderService.queryAll((page - 1) * limit, limit, null,null,null,null,null);
+                Integer dataNumber = orderService.countAllOrders(null,null,null,null);
+                return  new PageVo<> (0 , "" ,dataNumber, orderEntities);
+            }
+
+
+
+
+    }
+
+    /*
+    * 管理员审核订单 商品违规使交易失败 0失败 1成功 2待交易
+    * */
+    @PutMapping(value="/checkorder")
+    public ResultVo checkOrders(Integer tradestatus , String proid){
+        OrderEntity orderEntity = orderService.findOrderByProid(proid);
+        orderEntity.setTradestatus(tradestatus);
+        return new ResultVo(true , StatusCode.OK , "操作成功");
+    }
+
 
 }
