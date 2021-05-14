@@ -56,7 +56,8 @@ public class ChatWebSocket {
         userno = param;//接收到发送消息的人员编号
         this.WebSocketsession = WebSocketsession;
         webSocketSet.put(param, this);//加入map中
-        addOnlineCount();     //在线数加1 System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());
+        addOnlineCount();     //在线数加1
+        // System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());
         mineService.UpdateUserInfo(new UserInfo().setUserid(userno).setStatus("online")); //更新用户的状态为在线
     }
 
@@ -75,7 +76,7 @@ public class ChatWebSocket {
 
 
     /**
-     //给指定的人发消息
+     //给指定的人或群组发消息
      * @param session 可选的参数
      */
     @SuppressWarnings("unused")
@@ -133,7 +134,7 @@ public class ChatWebSocket {
 
 
     /**
-     * 这个方法与上面几个方法不一样。没有用注解，是根据自己需要添加的方法。
+     * 发送消息
      *
      * @param message
      * @throws IOException

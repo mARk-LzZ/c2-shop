@@ -11,6 +11,8 @@ import com.entity.Commodity;
 import com.entity.OrderEntity;
 import com.service.CommodityService;
 import com.service.OrderService;
+import com.util.StatusCode;
+import com.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.apache.log4j.Logger;
@@ -79,7 +81,7 @@ public class AlipayController {
     }
 
     /*
-    * 阿里同步通知
+    * 阿里同步通知（本地）
     * */
 
 
@@ -87,11 +89,11 @@ public class AlipayController {
 
     /*
     *
-    * 阿里异步通知
+    * 阿里异步通知（服务器）
     * */
 
     @RequestMapping(value = "alipayNotifyNotice")
-    public String alipayNotifyNotice(HttpServletRequest request, HttpServletRequest response) throws Exception {
+    public ResultVo alipayNotifyNotice(HttpServletRequest request, HttpServletRequest response) throws Exception {
 
         logger.info("支付成功, 进入异步通知接口...");
 
@@ -137,14 +139,16 @@ public class AlipayController {
                 //判断该笔订单是否在商户网站中已经做过处理
                 //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
                 //如果有做过处理，不执行商户的业务程序
-
-                //注意： 尚自习的订单没有退款功能, 这个条件判断是进不来的, 所以此处不必写代码
+                orderEntity = orderService.findOrderByProid(out_trade_no);
+                orderEntity.setTradestatus(0);
+                orderService.updateOrders(orderEntity);
                 //退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
             }else if ("TRADE_SUCCESS".equals(trade_status)){
                 //判断该笔订单是否在商户网站中已经做过处理
                 //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
                 //如果有做过处理，不执行商户的业务程序
-
+                orderEntity = orderService.findOrderByProid(out_trade_no);
+                orderEntity.setTradestatus(1);
                 //注意：
                 //付款完成后，支付宝系统发送该交易状态通知
 
@@ -165,7 +169,7 @@ public class AlipayController {
         }else {//验证失败
             logger.info("支付, 验签失败...");
         }
-        return "success";
+        return new ResultVo(true , StatusCode.OK , "支付完成");
     }
 
 }

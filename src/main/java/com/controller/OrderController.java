@@ -43,12 +43,12 @@ public class OrderController {
      * 列表
      * @return
      */
-    @RequestMapping(value="/list/{buyerid}" , method=RequestMethod.GET)
-    public PageVo list(int count , int page , String buyerid){
-        List<OrderEntity> orderList = orderService.findOrderByBuyerId(count,page,buyerid);
+    @RequestMapping(value="/list" , method=RequestMethod.GET)
+    public PageVo list(int count , int page , HttpSession httpSession){
+        String buyerid =(String) httpSession.getAttribute("userid");
+        List<OrderEntity> orderList = orderService.findOrderByBuyerId((page-1)*count, count ,buyerid);
 
-
-        return new PageVo(0 , "" , page , orderList);
+        return new PageVo(0 , "" , count , orderList);
     }
 
 
@@ -67,7 +67,7 @@ public class OrderController {
      * 前端传入 卖家id 商品id 运费 发货地址 收货地址 支付方式
      * 0交易失败 1交易成功 2待交易
      */
-    @RequestMapping("/insertorder")
+    @PostMapping("/insertorder")
     public ResultVo save(@RequestBody OrderEntity order , HttpSession session){
 		String userid = (String) session.getAttribute("userid");
 		order.setProid(KeyUtil.genUniqueKey());
@@ -97,9 +97,10 @@ public class OrderController {
     /**
      * 修改 (买家id 发货地址 收货地址 价格 运费 支付方式 买家电话 卖家电话)
      */
-    @RequestMapping("/update")
+    @PutMapping("/update")
 
     public ResultVo update(@RequestBody OrderEntity order){
+        order = orderService.findOrderByProid(order.getProid());
 
 		orderService.updateOrders(order);
 

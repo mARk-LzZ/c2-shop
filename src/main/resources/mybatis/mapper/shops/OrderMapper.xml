@@ -49,12 +49,12 @@
     </select>
     <!--根据买家id查询订单-->
     <select id="findOrderByBuyerId" resultType="com.entity.OrderEntity">
-        select * from orders where buyerid = #{buyerid} desc limit #{page},#{count}
+        select * from orders where buyerid = #{buyerid} order by procreatetime desc limit #{page},#{count}
     </select>
 
     <!--根据卖家id查询订单-->
     <select id="findOrderBySellerId" resultType="com.entity.OrderEntity">
-        select * from orders where sellerid = #{sellerid} desc limit #{page},#{count}
+        select * from orders where sellerid = #{sellerid} order by procreatetime desc limit #{page},#{count}
     </select>
 
     <!--修改订单信息-->

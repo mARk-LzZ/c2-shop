@@ -14,7 +14,7 @@ import org.json.JSONObject;
 public class SmsUtil {
     /**发送短信*/
     public Integer SendMsg(String PhoneNumbers, String TemplateParam,Integer type) {
-        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "123", "123");
+        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI4G7RyjpEVkPv8bRSwdK9", "1umzRaiDfKzOgdf6CQ4qihJTRd6wUB");
         IAcsClient client = new DefaultAcsClient(profile);
         CommonRequest request = new CommonRequest();
         //request.setProtocol(ProtocolType.HTTPS);
@@ -24,13 +24,13 @@ public class SmsUtil {
         request.setAction("SendSms");
         request.putQueryParameter("RegionId", "cn-hangzhou");
         request.putQueryParameter("PhoneNumbers", PhoneNumbers);
-        request.putQueryParameter("SignName", "吉吉国王");
+        request.putQueryParameter("SignName", "习惯日记");
         if(type == 0){//发送注册验证码
-            request.putQueryParameter("TemplateCode", "123");
+            request.putQueryParameter("TemplateCode", "SMS_194056992");
         }else if(type == 1){//发送重置密码验证码
-            request.putQueryParameter("TemplateCode", "123");
+            request.putQueryParameter("TemplateCode", "SMS_195721377");
         }else if (type == 2){//发送更换手机号验证码
-            request.putQueryParameter("TemplateCode", "123");
+            request.putQueryParameter("TemplateCode", "SMS_195721377");
         }
         request.putQueryParameter("TemplateParam", "{\"code\":\""+TemplateParam+"\"}");
         CommonResponse response=null;

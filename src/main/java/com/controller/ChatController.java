@@ -26,7 +26,7 @@ import java.util.UUID;
 
 @RestController
 @Api(description="聊天控制器")
-public class ChatCtrl {
+public class ChatController {
     @Autowired
     FriendsService friendsService;
     @Autowired
@@ -107,7 +107,7 @@ public class ChatCtrl {
         return mines;
     }
     /**
-     * TODO 初始化聊天
+     * 初始化聊天
      * */
     @GetMapping("/initim")
     @ApiOperation("初始化聊天")
